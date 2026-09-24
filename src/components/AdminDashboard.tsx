@@ -169,7 +169,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSelectUserForI
 
         {/* Filter & Search Bar */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3">
-          <div className="relative flex-1 min-w-[220px]">
+          <div className="relative flex-1 min-w-55">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
@@ -234,10 +234,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSelectUserForI
                     <th className="py-3.5 px-4">Name</th>
                     <th className="py-3.5 px-3 w-16">Age</th>
                     <th className="py-3.5 px-3 w-24">Weight</th>
-                    <th className="py-3.5 px-4 min-w-[160px]">Goal</th>
+                    <th className="py-3.5 px-4 min-w-40">Goal</th>
                     <th className="py-3.5 px-3 w-24">Intensity</th>
-                    <th className="py-3.5 px-4 min-w-[280px]">Original Plan</th>
-                    <th className="py-3.5 px-4 min-w-[280px]">Updated Plan</th>
+                    <th className="py-3.5 px-4 min-w-70">Original Plan</th>
+                    <th className="py-3.5 px-4 min-w-70">Updated Plan</th>
                     <th className="py-3.5 px-4 w-28 text-center">Actions</th>
                   </tr>
                 </thead>
