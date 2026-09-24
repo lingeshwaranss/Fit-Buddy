@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="40%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="spotlight1" cx="30%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="spotlight2" cx="80%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="metal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="50%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+    <linearGradient id="weightPlate" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="50%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base dark athletic backdrop -->
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#spotlight1)"/>
+  <rect width="1920" height="1080" fill="url(#spotlight2)"/>
+
+  <!-- Gym floor grid perspective lines -->
+  <g opacity="0.12" stroke="#38bdf8" stroke-width="1.5">
+    <line x1="0" y1="850" x2="1920" y2="850"/>
+    <line x1="0" y1="920" x2="1920" y2="920"/>
+    <line x1="0" y1="1000" x2="1920" y2="1000"/>
+    <line x1="200" y1="1080" x2="600" y2="750"/>
+    <line x1="500" y1="1080" x2="800" y2="750"/>
+    <line x1="960" y1="1080" x2="960" y2="750"/>
+    <line x1="1420" y1="1080" x2="1120" y2="750"/>
+    <line x1="1720" y1="1080" x2="1320" y2="750"/>
+  </g>
+
+  <!-- Stylized Gym Dumbbell on the Left -->
+  <g transform="translate(180, 520) rotate(-25)" opacity="0.35">
+    <!-- Barbell / Dumbbell bar -->
+    <rect x="0" y="40" width="300" height="20" rx="10" fill="url(#metal)"/>
+    <!-- Left weights -->
+    <rect x="-35" y="0" width="35" height="100" rx="8" fill="url(#weightPlate)" stroke="#475569" stroke-width="2"/>
+    <rect x="-65" y="-15" width="25" height="130" rx="8" fill="url(#weightPlate)" stroke="#64748b" stroke-width="2"/>
+    <rect x="-85" y="-30" width="16" height="160" rx="8" fill="url(#weightPlate)" stroke="#38bdf8" stroke-width="2"/>
+    <!-- Right weights -->
+    <rect x="300" y="0" width="35" height="100" rx="8" fill="url(#weightPlate)" stroke="#475569" stroke-width="2"/>
+    <rect x="340" y="-15" width="25" height="130" rx="8" fill="url(#weightPlate)" stroke="#64748b" stroke-width="2"/>
+    <rect x="370" y="-30" width="16" height="160" rx="8" fill="url(#weightPlate)" stroke="#38bdf8" stroke-width="2"/>
+  </g>
+
+  <!-- Stylized Kettlebell on the Right -->
+  <g transform="translate(1620, 680)" opacity="0.3">
+    <!-- Handle -->
+    <path d="M -60 -40 C -60 -120, 60 -120, 60 -40" fill="none" stroke="url(#metal)" stroke-width="24" stroke-linecap="round"/>
+    <!-- Body -->
+    <circle cx="0" cy="40" r="110" fill="url(#weightPlate)" stroke="#38bdf8" stroke-width="3"/>
+    <text x="0" y="50" font-family="sans-serif" font-weight="bold" font-size="28" fill="#94a3b8" text-anchor="middle">24 KG</text>
+  </g>
+
+  <!-- Pulse / Heart rate line across the background -->
+  <path d="M 0 540 L 400 540 L 440 500 L 470 590 L 510 440 L 550 620 L 580 520 L 610 540 L 1920 540"
+        fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.18"/>
+</svg>

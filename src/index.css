@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --color-slate-950: #2f1b16;
+  --color-slate-900: #43261d;
+  --color-slate-800: #624033;
+  --color-slate-700: #815846;
+  --color-slate-600: #9b725c;
+  --color-slate-500: #b8957d;
+  --color-slate-400: #cdb5a2;
+  --color-slate-300: #e0cfc0;
+  --color-slate-200: #eaded2;
+  --color-slate-100: #f4eee8;
+  --color-slate-50: #faf7f3;
+
+  --color-blue-700: #93432d;
+  --color-blue-600: #b65337;
+  --color-blue-500: #c96747;
+  --color-blue-400: #d78360;
+  --color-blue-300: #e3a080;
+  --color-blue-200: #efc1a9;
+  --color-indigo-600: #a04b32;
+  --color-indigo-500: #bd6545;
+  --color-cyan-400: #d69a68;
+  --color-cyan-300: #e4b483;
+  --color-amber-500: #c97b45;
+  --color-amber-400: #d99a61;
+  --color-emerald-500: #7e8b5a;
+  --color-emerald-400: #98a56d;
+}
+
+@layer base {
+  body {
+    background-color: #2f1b16;
+    color: #2f1b16;
+    font-family: 'Playfair Display', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: 'Cinzel Decorative', Georgia, serif;
+  }
+}
+
+/* Custom scrollbars for clean code/plan view */
+pre::-webkit-scrollbar,
+div::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+pre::-webkit-scrollbar-track,
+div::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+pre::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+pre::-webkit-scrollbar-thumb:hover,
+div::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
