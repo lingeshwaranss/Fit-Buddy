@@ -1,6 +1,7 @@
+import 'dotenv/config';
 import { GoogleGenAI } from '@google/genai';
 
-const apiKey = process.env.GEMINI_API_KEY;
+const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 
 // Use GoogleGenAI on server side as required by guidelines
 const ai = apiKey

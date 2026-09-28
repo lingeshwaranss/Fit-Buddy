@@ -357,6 +357,12 @@ export const db = {
     return data.plans.find(p => p.user_id === userId);
   },
 
+  getNextUserId(): number {
+    const data = ensureDbFile();
+    const ids = [...data.users.map(user => user.id), ...data.plans.map(plan => plan.user_id)];
+    return Math.max(0, ...ids) + 1;
+  },
+
   saveUser(user: { id: number; name: string; age: number; weight: number; goal: string; intensity: 'Low' | 'Medium' | 'High' }): User {
     const data = ensureDbFile();
     const existingIndex = data.users.findIndex(u => u.id === user.id);
@@ -380,7 +386,7 @@ export const db = {
     const newPlan: WorkoutPlan = {
       user_id: userId,
       original_plan: originalPlan,
-      updated_plan: existingIndex >= 0 ? data.plans[existingIndex].updated_plan : null,
+      updated_plan: null,
       nutrition_tip: nutritionTip,
       created_at: existingIndex >= 0 ? data.plans[existingIndex].created_at : new Date().toISOString()
     };
@@ -394,7 +400,7 @@ export const db = {
     return newPlan;
   },
 
-  updatePlan(userId: number, updatedPlanText: string, feedback: string): WorkoutPlan | null {
+  updatePlan(userId: number, updatedPlanText: string, feedback: string, nutritionTip?: string): WorkoutPlan | null {
     const data = ensureDbFile();
     const plan = data.plans.find(p => p.user_id === userId);
     if (!plan) return null;
@@ -402,6 +408,7 @@ export const db = {
     plan.updated_plan = updatedPlanText;
     plan.last_feedback = feedback;
     plan.updated_at = new Date().toISOString();
+    if (nutritionTip) plan.nutrition_tip = nutritionTip;
 
     saveDbFile(data);
     return plan;

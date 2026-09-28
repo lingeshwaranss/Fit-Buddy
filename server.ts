@@ -27,26 +27,57 @@ app.get('/api/health', (_req: Request, res: Response) => {
 async function handleGeneratePlan(req: Request, res: Response): Promise<void> {
   try {
     const rawId = req.body.user_id ?? req.body.userId ?? req.body.id;
-    const userId = Number(rawId) || Math.floor(1000 + Math.random() * 9000);
+    const requestedUserId = Number(rawId);
     const username = (req.body.name ?? req.body.username ?? 'Fitness Enthusiast').toString().trim();
     const age = Number(req.body.age) || 25;
     const weight = Number(req.body.weight) || 70.0;
     const goal = (req.body.goal ?? req.body.fitness_goal ?? 'general fitness and fat loss').toString().trim();
     const intensity = (req.body.intensity ?? 'Medium') as 'Low' | 'Medium' | 'High';
+    const userMode = req.body.user_mode === 'returning' ? 'returning' : 'new';
 
-    // Generate Workout Plan (Gemini)
-    const workoutPlan = await generateWorkoutPlanGemini({
-      username,
-      goal,
-      intensity,
-      age,
-      weight,
-    });
+    if (!Number.isSafeInteger(requestedUserId) || requestedUserId <= 0) {
+      res.status(400).json({ success: false, error: 'Enter a valid positive User ID.' });
+      return;
+    }
 
-    // Generate Nutrition Tip (Gemini Flash)
+    let userId = requestedUserId;
+    let notice: string | undefined;
+    let previousPlan;
+    const existingUser = db.getUser(requestedUserId);
+
+    if (userMode === 'returning') {
+      if (!existingUser) {
+        res.status(404).json({ success: false, error: 'No saved user has that ID. Choose New user to create a profile.' });
+        return;
+      }
+      if (existingUser.name.trim().toLocaleLowerCase() !== username.toLocaleLowerCase()) {
+        res.status(409).json({ success: false, error: 'That User ID belongs to a different name. Check the ID and registered name, or choose New user.' });
+        return;
+      }
+      previousPlan = db.getPlan(requestedUserId);
+      if (!previousPlan) {
+        res.status(404).json({ success: false, error: 'No saved workout plan exists for that user yet.' });
+        return;
+      }
+    } else if (existingUser) {
+      userId = db.getNextUserId();
+      notice = `User ID #${requestedUserId} is already in use. Your new profile was assigned ID #${userId}.`;
+    }
+
+    const workoutPlan = userMode === 'returning' && previousPlan
+      ? await updateWorkoutPlanGemini(
+          previousPlan.updated_plan || previousPlan.original_plan,
+          `Refresh this returning user's existing 7-day plan using their current profile. Preserve useful progress, review the previous plan before changing it, and keep the schedule safe and balanced. Current profile: age ${age}, weight ${weight} kg, goal "${goal}", preferred intensity "${intensity}". Adapt the existing plan to these details.`,
+        )
+      : await generateWorkoutPlanGemini({ username, goal, intensity, age, weight });
+
     const nutritionTip = await generateNutritionTipFlash(goal);
 
-    // Save to Database
+    if (userMode === 'new' && db.getUser(userId)) {
+      userId = db.getNextUserId();
+      notice = `The requested ID was just taken. Your new profile was assigned ID #${userId}.`;
+    }
+
     const savedUser = db.saveUser({
       id: userId,
       name: username,
@@ -56,11 +87,24 @@ async function handleGeneratePlan(req: Request, res: Response): Promise<void> {
       intensity,
     });
 
-    const savedPlan = db.savePlan(userId, workoutPlan, nutritionTip);
+    const savedPlan = userMode === 'returning'
+      ? db.updatePlan(
+          userId,
+          workoutPlan,
+          `Plan refreshed from the previous plan using the current profile: ${goal} (${intensity} intensity).`,
+          nutritionTip,
+        )
+      : db.savePlan(userId, workoutPlan, nutritionTip);
+
+    if (!savedPlan) {
+      res.status(404).json({ success: false, error: 'The saved plan could not be updated. Reload the user and try again.' });
+      return;
+    }
 
     res.json({
       success: true,
-      message: 'Workout plan generated and saved successfully!',
+      message: userMode === 'returning' ? 'Your previous plan was reviewed and updated.' : 'Workout plan generated and saved successfully!',
+      notice,
       user: savedUser,
       plan: savedPlan,
       workout_plan: workoutPlan,

@@ -114,9 +114,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSelectUserForI
               <Users className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-                <span>📋</span>
-                <span>FitBuddy - All Users & Workout Plans</span>
+              <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-100 sm:text-3xl">
+                <span>FitBuddy / Coach workspace</span>
               </h1>
               <p className="text-xs sm:text-sm text-slate-400">
                 Admin view to track registered profiles, compare original & updated AI plans, and monitor client progress.
@@ -145,23 +144,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSelectUserForI
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5">
             <span className="text-xs text-slate-400 font-medium">Total Registered Users</span>
-            <div className="text-xl sm:text-2xl font-bold text-white mt-1">{users.length}</div>
+            <div className="mt-1 text-2xl font-bold text-slate-100">{users.length}</div>
           </div>
           <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5">
             <span className="text-xs text-slate-400 font-medium">Updated Plans (With Feedback)</span>
-            <div className="text-xl sm:text-2xl font-bold text-emerald-400 mt-1">
+            <div className="mt-1 text-2xl font-bold text-emerald-400">
               {users.filter(u => u.has_updated_plan).length}
             </div>
           </div>
           <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5">
             <span className="text-xs text-slate-400 font-medium">High Intensity Athletes</span>
-            <div className="text-xl sm:text-2xl font-bold text-rose-400 mt-1">
+            <div className="mt-1 text-2xl font-bold text-rose-400">
               {users.filter(u => u.intensity === 'High').length}
             </div>
           </div>
           <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5">
             <span className="text-xs text-slate-400 font-medium">Avg User Weight</span>
-            <div className="text-xl sm:text-2xl font-bold text-cyan-400 mt-1">
+            <div className="mt-1 text-2xl font-bold text-cyan-400">
               {users.length > 0 ? (users.reduce((acc, u) => acc + u.weight, 0) / users.length).toFixed(1) : 0} kg
             </div>
           </div>
@@ -250,7 +249,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSelectUserForI
                         <td className="py-3 px-4 font-bold text-blue-400 text-center">{user.id}</td>
 
                         {/* Name */}
-                        <td className="py-3 px-4 font-semibold text-white whitespace-nowrap">
+                        <td className="py-3 px-4 font-semibold text-slate-100 whitespace-nowrap">
                           {user.name}
                         </td>
 
@@ -406,7 +405,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSelectUserForI
           <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
             <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
               <div>
-                <h3 className="font-bold text-lg text-white">
+                <h3 className="font-bold text-lg text-slate-100">
                   User #{modalUser.id} – {modalUser.name}
                 </h3>
                 <p className="text-xs text-slate-400">

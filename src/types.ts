@@ -29,6 +29,7 @@ export interface MergedUserView extends User {
 export interface GeneratePlanResponse {
   success: boolean;
   message: string;
+  notice?: string;
   user: User;
   plan: WorkoutPlanRecord;
   workout_plan: string;

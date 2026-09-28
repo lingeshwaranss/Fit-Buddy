@@ -49,8 +49,16 @@ export default function App() {
 
   const handlePlanGenerated = (data: GeneratePlanResponse) => {
     setActivePlan(data);
-    setUserCount(prev => prev + 1);
     setActiveTab('result');
+
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(usersData => {
+        if (usersData.success && Array.isArray(usersData.users)) {
+          setUserCount(usersData.users.length);
+        }
+      })
+      .catch(() => {});
   };
 
   const handlePlanUpdated = (updatedData: { updated_plan: string; planRecord: WorkoutPlanRecord }) => {
@@ -72,7 +80,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-['Roboto',sans-serif]">
+    <div className="min-h-screen bg-(--paper) text-(--ink) flex flex-col">
       {/* Top Navigation */}
       <Navbar
         activeTab={activeTab}
@@ -129,7 +137,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-950 border-t border-slate-900 py-6 px-4 text-center text-xs text-slate-500">
+      <footer className="bg-(--paper) border-t border-slate-200 py-6 px-4 text-center text-xs text-slate-600">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>FitBuddy – AI Fitness Plan Generator using Gemini 2.5 Pro & Flash Models</p>
           <div className="flex items-center gap-4">

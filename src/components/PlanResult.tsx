@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import {
   CheckCircle2,
   Send,
@@ -7,13 +8,6 @@ import {
   Copy,
   Check,
   RotateCcw,
-  MessageSquare,
-  Flame,
-  Apple,
-  Calendar,
-  Layers,
-  ChevronDown,
-  ChevronUp,
 } from 'lucide-react';
 import { GeneratePlanResponse, WorkoutPlanRecord } from '../types.ts';
 
@@ -31,7 +25,7 @@ export const PlanResult: React.FC<PlanResultProps> = ({ planData, onPlanUpdated,
   const [feedbackError, setFeedbackError] = useState<string | null>(null);
 
   const [activePlanTab, setActivePlanTab] = useState<'current' | 'original' | 'compare'>('current');
-  const [viewMode, setViewMode] = useState<'formatted' | 'raw'>('raw');
+  const [viewMode, setViewMode] = useState<'formatted' | 'plain'>('formatted');
   const [copied, setCopied] = useState(false);
 
   // Quick feedback prompts matching the PDF scenarios
@@ -110,19 +104,10 @@ export const PlanResult: React.FC<PlanResultProps> = ({ planData, onPlanUpdated,
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] p-4 sm:p-6 lg:p-8">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-slate-950 -z-10" />
-      <div
-        className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-30 mix-blend-screen scale-105 -z-10"
-        style={{
-          backgroundImage: `url('/gym-bg.svg')`,
-          filter: 'blur(1px)',
-        }}
-      />
+    <div className="relative min-h-[calc(100vh-4rem)] bg-(--paper) p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Top actions bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/80 backdrop-blur-md p-3.5 rounded-xl border border-slate-800 text-white">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#183b31] bg-[#183b31] p-3.5 text-white">
           <button
             onClick={onReset}
             className="text-xs sm:text-sm font-medium text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors flex items-center gap-1.5"
@@ -150,13 +135,19 @@ export const PlanResult: React.FC<PlanResultProps> = ({ planData, onPlanUpdated,
           </div>
         </div>
 
+        {planData.notice && (
+          <div role="status" className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            {planData.notice}
+          </div>
+        )}
+
         {/* Feedback Success Confirmation Banner (matching PDF page 21) */}
         {feedbackSuccess && (
-          <div className="bg-emerald-500/15 border-2 border-emerald-500/40 rounded-xl p-4 text-emerald-300 flex items-center gap-3 shadow-lg shadow-emerald-950/40 animate-in fade-in zoom-in-95 duration-200">
-            <CheckCircle2 className="w-6 h-6 text-emerald-400 flex-shrink-0" />
+          <div className="flex items-center gap-3 rounded-lg border border-emerald-300 bg-emerald-100 p-4 text-emerald-900 shadow-sm animate-in fade-in zoom-in-95 duration-200">
+            <CheckCircle2 className="w-6 h-6 shrink-0 text-emerald-700" />
             <div>
-              <p className="font-bold text-base text-white">Your plan has been updated based on your feedback!</p>
-              <p className="text-xs text-emerald-200/90 mt-0.5">
+              <p className="font-bold text-base text-emerald-950">Your plan has been updated based on your feedback!</p>
+              <p className="mt-0.5 text-xs text-emerald-800">
                 Gemini AI has adjusted your routines while preserving your core progress targets.
               </p>
             </div>
@@ -165,11 +156,11 @@ export const PlanResult: React.FC<PlanResultProps> = ({ planData, onPlanUpdated,
 
         {/* Header Heading matching PDF page 19 */}
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-300 text-xs font-semibold mb-2">
+          <div className="mb-2 inline-flex items-center gap-2 rounded border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
             <Sparkles className="w-3.5 h-3.5" />
             <span>AI Customized Routine</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center justify-center gap-2.5">
+          <h1 className="flex items-center justify-center gap-2.5 text-3xl font-extrabold text-slate-900 sm:text-4xl">
             <span>🏋️</span>
             <span>Your Personalized Workout Plan</span>
           </h1>
@@ -189,7 +180,7 @@ export const PlanResult: React.FC<PlanResultProps> = ({ planData, onPlanUpdated,
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4 gap-x-6 text-sm">
             <div>
-              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Name</span>
+              <span className="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Name</span>
               <span className="font-bold text-slate-900 text-base">{planData.username}</span>
             </div>
 
@@ -199,17 +190,17 @@ export const PlanResult: React.FC<PlanResultProps> = ({ planData, onPlanUpdated,
             </div>
 
             <div>
-              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Age</span>
+              <span className="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Age</span>
               <span className="font-bold text-slate-900 text-base">{planData.age} yrs</span>
             </div>
 
             <div>
-              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Weight</span>
+              <span className="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Weight</span>
               <span className="font-bold text-slate-900 text-base">{planData.weight} kg</span>
             </div>
 
             <div>
-              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Intensity</span>
+              <span className="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Intensity</span>
               <span
                 className={`inline-block mt-0.5 px-2.5 py-0.5 rounded-full text-xs font-bold ${
                   planData.intensity === 'High'
@@ -224,7 +215,7 @@ export const PlanResult: React.FC<PlanResultProps> = ({ planData, onPlanUpdated,
             </div>
 
             <div className="col-span-2 sm:col-span-3">
-              <span className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Fitness Goal</span>
+              <span className="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Fitness Goal</span>
               <span className="font-semibold text-slate-800 text-sm bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200 inline-block mt-1">
                 🎯 {planData.goal}
               </span>
@@ -273,6 +264,27 @@ export const PlanResult: React.FC<PlanResultProps> = ({ planData, onPlanUpdated,
                 </button>
               )}
             </div>
+
+            {activePlanTab !== 'compare' && (
+              <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white p-1 text-xs font-semibold" aria-label="Plan display mode">
+                <button
+                  type="button"
+                  onClick={() => setViewMode('formatted')}
+                  aria-pressed={viewMode === 'formatted'}
+                  className={`rounded px-2.5 py-1.5 transition-colors ${viewMode === 'formatted' ? 'bg-[#183b31] text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+                >
+                  Formatted
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('plain')}
+                  aria-pressed={viewMode === 'plain'}
+                  className={`rounded px-2.5 py-1.5 transition-colors ${viewMode === 'plain' ? 'bg-[#183b31] text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+                >
+                  Plain text
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Side-by-side comparison view */}
@@ -281,21 +293,21 @@ export const PlanResult: React.FC<PlanResultProps> = ({ planData, onPlanUpdated,
               <div>
                 <div className="flex items-center justify-between text-xs font-bold text-slate-700 px-1 mb-1.5">
                   <span>📌 Original Generated Plan</span>
-                  <span className="text-slate-500 font-normal">Version 1</span>
+                  <span className="text-slate-600 font-normal">Version 1</span>
                 </div>
-                <pre className="bg-slate-50 border border-slate-200 rounded-xl p-4 font-mono text-xs leading-relaxed text-slate-800 whitespace-pre-wrap max-h-[500px] overflow-y-auto">
-                  {originalPlanText}
-                </pre>
+                <article className="plan-markdown max-h-125 overflow-y-auto rounded-lg border border-slate-200 bg-slate-50 p-4">
+                  <ReactMarkdown>{originalPlanText}</ReactMarkdown>
+                </article>
               </div>
 
               <div>
                 <div className="flex items-center justify-between text-xs font-bold text-emerald-700 px-1 mb-1.5">
                   <span>✨ Updated Plan (With Feedback)</span>
-                  <span className="text-emerald-600 font-normal">Active Version</span>
+                  <span className="text-emerald-700 font-normal">Active Version</span>
                 </div>
-                <pre className="bg-emerald-50/50 border border-emerald-200 rounded-xl p-4 font-mono text-xs leading-relaxed text-slate-900 whitespace-pre-wrap max-h-[500px] overflow-y-auto">
-                  {currentPlanText}
-                </pre>
+                <article className="plan-markdown max-h-125 overflow-y-auto rounded-lg border border-emerald-200 bg-emerald-50/50 p-4">
+                  <ReactMarkdown>{currentPlanText}</ReactMarkdown>
+                </article>
               </div>
             </div>
           ) : (
@@ -315,10 +327,15 @@ export const PlanResult: React.FC<PlanResultProps> = ({ planData, onPlanUpdated,
                 </div>
               )}
 
-              {/* Exact <pre> block rendering as specified in the PDF */}
-              <pre className="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 font-mono text-xs sm:text-sm leading-relaxed text-slate-800 whitespace-pre-wrap max-h-[550px] overflow-y-auto shadow-inner">
-                {activePlanTab === 'original' ? originalPlanText : currentPlanText}
-              </pre>
+              {viewMode === 'formatted' ? (
+                <article className="plan-markdown max-h-137.5 overflow-y-auto rounded-lg border border-slate-200 bg-slate-50 p-4 shadow-inner sm:p-5">
+                  <ReactMarkdown>{activePlanTab === 'original' ? originalPlanText : currentPlanText}</ReactMarkdown>
+                </article>
+              ) : (
+                <pre className="max-h-137.5 overflow-y-auto whitespace-pre-wrap rounded-lg border border-slate-200 bg-slate-50 p-4 font-mono text-xs leading-relaxed text-slate-800 shadow-inner sm:p-5 sm:text-sm">
+                  {activePlanTab === 'original' ? originalPlanText : currentPlanText}
+                </pre>
+              )}
             </div>
           )}
         </div>
@@ -335,7 +352,7 @@ export const PlanResult: React.FC<PlanResultProps> = ({ planData, onPlanUpdated,
               {planData.nutrition_tip}
             </p>
           </div>
-          <p className="text-xs text-slate-500 mt-2.5 italic">
+          <p className="text-xs text-slate-600 mt-2.5 italic">
             * Generated by Gemini Flash for high-speed, targeted dietary insights aligned with "{planData.goal}".
           </p>
         </div>
