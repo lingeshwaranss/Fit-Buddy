@@ -154,3 +154,24 @@ fitbuddy/
 │       └── gym-bg.svg          # Gym backdrop graphic
 └── fitbuddy.db                 # Local SQLite database (created on first run)
 ```
+
+## Project Team & Deliverables
+
+- Team ID: 6ab3ec17b5170a9b58b3a66b
+- Team Lead: Lingeshwaran S S
+- Members: Prathish R, Akash S, Dinesh S
+- College: Annai Violet Arts & Science College
+- Course: B.Sc Computer Science, 2nd Year
+- Project timeline: 25/09/2026 to 30/09/2026
+- GitHub: https://github.com/lingeshwaranss/Fit-Buddy
+- Demo: https://drive.google.com/drive/folders/1kkW0nGt5YK2zUHWrvzS4sgOxkZuAa1Kc
+
+Project planning and submission documents are included in the numbered folders:
+1. Brainstorming & Ideation
+2. Requirement Analysis
+3. Project Design Phase
+4. Project Planning Phase
+5. Project Development Phase
+6. Project Testing
+7. Project Documentation
+8. Project Demonstration
