@@ -86,7 +86,8 @@ def test_scenario_4():
     print("\n--- Scenario 4: Admin Dashboard / View All Users ---")
     res = requests.get(f"{BASE_URL}/api/users")
     if res.status_code == 200:
-        users = res.json()
+        response_data = res.json()
+        users = response_data.get("users", []) if isinstance(response_data, dict) else response_data
         log(f"Admin retrieved {len(users)} registered users from SQLite database.")
         for u in users[:3]:
             print(f"  • User #{u['id']}: {u['name']} | Goal: {u['goal']} | Intensity: {u['intensity']} | Updated: {'Yes' if u.get('updated_plan') else 'No'}")

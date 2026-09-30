@@ -92,7 +92,7 @@ def save_plan(user_id: int, plan: str, nutrition_tip: str = None):
     finally:
         db.close()
 
-def update_plan(user_id: int, updated_text: str, feedback: str = None):
+def update_plan(user_id: int, updated_text: str, feedback: str = None, nutrition_tip: str = None):
     db = SessionLocal()
     try:
         workout = db.query(WorkoutPlan).filter_by(user_id=user_id).first()
@@ -100,6 +100,8 @@ def update_plan(user_id: int, updated_text: str, feedback: str = None):
             workout.updated_plan = updated_text
             if feedback:
                 workout.last_feedback = feedback
+            if nutrition_tip:
+                workout.nutrition_tip = nutrition_tip
             workout.updated_at = datetime.utcnow()
             db.commit()
     finally:

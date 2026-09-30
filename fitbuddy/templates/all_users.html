@@ -146,6 +146,7 @@
             <th style="width: 90px;">Intensity</th>
             <th style="width: 38%;">Original Plan</th>
             <th style="width: 38%;">Updated Plan</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -161,6 +162,11 @@
             </td>
             <td><pre>{{ user.original_plan }}</pre></td>
             <td><pre>{{ user.updated_plan }}</pre></td>
+            <td>
+              <form action="/delete-user/{{ user.id }}" method="POST">
+                <button type="submit" aria-label="Delete {{ user.name }}">Delete</button>
+              </form>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

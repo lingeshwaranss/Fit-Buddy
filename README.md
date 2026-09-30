@@ -35,9 +35,9 @@ FitBuddy is an AI-powered fitness application built with **FastAPI**, **Google G
   - *SQLite Viewer* (to inspect `fitbuddy.db` directly in VS Code)
 
 ### 2. Open Project in VS Code
-Open the `fitbuddy` folder in VS Code:
+Open the repository root in VS Code:
 ```bash
-code fitbuddy
+code .
 ```
 
 ### 3. Create & Activate Virtual Environment
@@ -45,19 +45,19 @@ Open the VS Code Terminal (`Ctrl + \`` or `Cmd + \``):
 
 **On Linux / macOS:**
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
 **On Windows (Command Prompt or PowerShell):**
 ```bash
-python -m venv venv
-venv\Scripts\activate
+py -m venv .venv
+.venv\Scripts\Activate.ps1
 ```
 
 ### 4. Install Dependencies
 ```bash
-pip install -r requirements.txt
+py -m pip install -r fitbuddy/requirements.txt
 ```
 
 ### 5. Configure API Key
@@ -73,18 +73,14 @@ GOOGLE_API_KEY="your_actual_gemini_api_key_here"
 
 ---
 
-## 🚀 Running the Application
+## Running the Application
 
-Start the Uvicorn ASGI server with hot-reload enabled:
+Run the Python/Jinja2 application from the repository root:
 ```bash
-uvicorn app.main:app --reload --port 8000
+py -m uvicorn fitbuddy.app.main:app --reload --port 8000
 ```
 
-Once running, access:
-- **Interactive Web App (Homepage):** [http://127.0.0.1:8000](http://127.0.0.1:8000)
-- **Admin Dashboard:** [http://127.0.0.1:8000/view-all-users](http://127.0.0.1:8000/view-all-users)
-- **Interactive OpenAPI Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- **ReDoc Documentation:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000) for the app and [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) for API documentation.
 
 ---
 
@@ -93,7 +89,7 @@ Once running, access:
 ### Option A: Run the Automated Test Suite
 With the server running in one terminal, open a second terminal and execute:
 ```bash
-python test_api.py
+py fitbuddy/test_api.py
 ```
 This tests all 4 milestones/scenarios and prints live status logs.
 

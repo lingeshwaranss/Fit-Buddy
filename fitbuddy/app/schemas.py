@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Literal, Optional
 
 class UserInput(BaseModel):
     user_id: int = Field(..., description="Unique User ID integer")
@@ -7,7 +7,7 @@ class UserInput(BaseModel):
     age: int = Field(..., ge=10, le=120, description="Age in years")
     weight: float = Field(..., gt=20.0, description="Weight in kg")
     goal: str = Field(..., description="Fitness objective (e.g. weight loss, muscle gain)")
-    intensity: str = Field(..., description="Workout intensity: Low, Medium, or High")
+    intensity: Literal["Low", "Medium", "High"] = Field(..., description="Workout intensity: Low, Medium, or High")
 
 class WorkoutRequest(BaseModel):
     goal: str
